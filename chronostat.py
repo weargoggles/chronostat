@@ -19,8 +19,13 @@ Usage::
 __version__ = '0.0.1'
 
 import functools
+import logging
+
+from requests import Response
 from chrono import Timer as ChronoTimer
 from stathat import StatHat
+
+logger = logging.getLogger(__name__)
 
 
 class Timer(ChronoTimer):
@@ -57,6 +62,12 @@ class ChronoStat(StatHat):
         """monkey-patch for new versions of requests, and don't
         send anything if email hasn't been set"""
         if self.email:
+            logger.debug("StatHat write: %s -> %s" % (data, path))
             url = self.STATHAT_URL + path
             r = self.session.post(url, data=data)
+            return r
+        else:
+            logger.info("Not sending metric: no StatHat email provided")
+            r = Response()
+            r.status_code = 200
             return r
