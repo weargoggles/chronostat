@@ -11,7 +11,7 @@ Usage::
 
     >>> from chronostat import ChronoStat
     >>> import time
-    >>> stats = ChronoStat('pete@dabapps.com')
+    >>> stats = ChronoStat('me@mydomain.com')
     >>> with stats.timer('foo'):
     ...     time.sleep(3)
 """
