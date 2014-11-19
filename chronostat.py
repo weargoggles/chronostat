@@ -45,3 +45,12 @@ class ChronoStat(StatHat):
     """Adds a timing context manager slash decorator"""
     def timer(self, key):
         return Timer(self, key)
+
+    def _http_post(self, path, data):
+        """monkey-patch for new versions of requests, and don't
+        send anything if email hasn't been set"""
+        if self.email:
+            url = self.STATHAT_URL + path
+            r = self.session.post(url, data=data)
+            return r
+
