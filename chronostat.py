@@ -33,9 +33,10 @@ class Timer(ChronoTimer):
         self.key = key
 
     def __exit__(self, exc_type, value, tb):
+        retval = super(Timer, self).__exit__(exc_type, value, tb)
         if self.elapsed:
             self.stat.value(self.key, self.elapsed)
-        return super(Timer, self).__exit__(exc_type, value, tb)
+        return retval
 
     def __call__(self, f):
         @functools.wraps(f)
