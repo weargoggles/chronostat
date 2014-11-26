@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from setuptools import setup
 import re
 import os
 import sys
+
+from setuptools import setup
 
 
 name = 'chronostat'
@@ -15,14 +16,16 @@ author = 'Pete Wildsmith'
 author_email = 'pete@dabapps.com'
 license = 'BSD'
 install_requires = ['chrono', 'stathat']
+tests_require = ['tox', 'responses']
 
 
 def get_version(package):
     """
     Return package version as listed in `__version__` in `init.py`.
     """
-    init_py = open(os.path.join(package, '.py')).read()
-    return re.search("^__version__ = ['\"]([^'\"]+)['\"]", init_py, re.MULTILINE).group(1)
+    init_py = open(package + '.py').read()
+    return re.search("^__version__ = ['\"]([^'\"]+)['\"]", init_py,
+                     re.MULTILINE).group(1)
 
 
 def get_packages(package):
@@ -58,7 +61,6 @@ if sys.argv[-1] == 'publish':
     print "  git push --tags"
     sys.exit()
 
-
 setup(
     name=name,
     version=get_version(package),
@@ -67,7 +69,8 @@ setup(
     description=description,
     author=author,
     author_email=author_email,
-    packages=get_packages(package),
+    py_modules=['chronostat'],
     package_data=get_package_data(package),
-    install_requires=install_requires
+    install_requires=install_requires,
+    tests_require=tests_require,
 )
